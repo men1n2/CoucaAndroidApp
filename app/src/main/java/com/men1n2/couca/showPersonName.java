@@ -25,6 +25,8 @@ public class showPersonName extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_show_person_name);
+
         // Dim System Bar
         // This example uses decor view, but you can use any visible view.
         View decorView = getWindow().getDecorView();
@@ -75,8 +77,6 @@ public class showPersonName extends Activity {
         personNameTextView = (TextView) findViewById(R.id.personNameField);
         personNameTextView.setText(personName);
         // autoScaleTextViewTextToHeight(textField, personName);
-
-        setContentView(R.layout.activity_show_person_name);
     }
 
 

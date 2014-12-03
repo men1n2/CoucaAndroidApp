@@ -172,7 +172,7 @@ public class enteringTextActivity extends Activity {
             alert11.show();
         }
         else {
-            Intent intent = new Intent(this, showNameActivity.class);
+            Intent intent = new Intent(this, showPersonName.class);
             EditText editText = (EditText) findViewById(R.id.editText);
             intent.putExtra("personName", editText.getText().toString());
             startActivity(intent);

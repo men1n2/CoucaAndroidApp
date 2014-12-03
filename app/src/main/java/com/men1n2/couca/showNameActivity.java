@@ -83,8 +83,9 @@ public class showNameActivity extends Activity {
 
         // Get the message from the intent
         String personName = getIntent().getExtras().getString("personName");
-        TextView personNameTextView = (TextView) findViewById(R.id.personNameField);
-        personNameTextView.setText(personName);
+        TextView personNameTextView = (TextView) findViewById(android.R.id.text1);
+        System.out.println("####### " + findViewById(android.R.id.input));
+        // personNameTextView.setText(personName);
         // autoScaleTextViewTextToHeight(textField, personName);
     }
 
