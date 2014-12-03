@@ -30,12 +30,6 @@
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name=".showNameActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_show_name"
-            android:screenOrientation="landscape" >
-        </activity>
-        <activity
             android:name=".showPersonName"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_show_person_name"
