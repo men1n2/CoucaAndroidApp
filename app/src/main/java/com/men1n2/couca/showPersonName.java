@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -77,6 +78,8 @@ public class showPersonName extends Activity {
         personNameTextView = (TextView) findViewById(R.id.personNameField);
         personNameTextView.setText(personName);
         // autoScaleTextViewTextToHeight(textField, personName);
+        Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/Connect Bold 2014-rec.ttf");
+        personNameTextView.setTypeface(fontType);
     }
 
 

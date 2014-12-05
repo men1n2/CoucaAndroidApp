@@ -1,33 +1,29 @@
 package com.men1n2.couca;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 
-import com.men1n2.couca.R;
-
-public class enteringTextActivity extends Activity {
+public class enterText extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_enter_text);
 
         // Dim System Bar
         // This example uses decor view, but you can use any visible view.
@@ -62,7 +58,7 @@ public class enteringTextActivity extends Activity {
         // ------------------------
 
         // Show keyboard automatically on focus
-        View editField = findViewById(R.id.editText);
+        View editField = findViewById(R.id.personNameEditText);
         if(editField != null) {
             editField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
@@ -76,20 +72,16 @@ public class enteringTextActivity extends Activity {
             imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
         }
 
-        setContentView(R.layout.activity_entering_text);
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
-
+        Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/Connect Bold 2014-rec.ttf");
+        Button confirmButton = (Button) findViewById(R.id.confirmButton);
+        confirmButton.setTypeface(fontType);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.entering_text, menu);
+        getMenuInflater().inflate(R.menu.enter_text, menu);
         return true;
     }
 
@@ -103,22 +95,6 @@ public class enteringTextActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_entering_text, container, false);
-            return rootView;
-        }
     }
 
     // Prevent exit on Back pressed
@@ -153,7 +129,7 @@ public class enteringTextActivity extends Activity {
     /** Called when the user touches the button */
     public void onConfirmClick(View view) {
         // Do something in response to button click
-        EditText inputField = (EditText) findViewById(R.id.editText);
+        EditText inputField = (EditText) findViewById(R.id.personNameEditText);
         // Test if the word is bad or no
         if(testBadWords(inputField.getText().toString())) {
             // Show Alert if the word is bad word
@@ -173,7 +149,7 @@ public class enteringTextActivity extends Activity {
         }
         else {
             Intent intent = new Intent(this, showPersonName.class);
-            EditText editText = (EditText) findViewById(R.id.editText);
+            EditText editText = (EditText) findViewById(R.id.personNameEditText);
             intent.putExtra("personName", editText.getText().toString());
             startActivity(intent);
         }

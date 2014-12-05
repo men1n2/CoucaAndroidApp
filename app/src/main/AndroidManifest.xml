@@ -24,15 +24,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".enteringTextActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_entering_text"
-            android:screenOrientation="landscape" >
-        </activity>
-        <activity
             android:name=".showPersonName"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_show_person_name"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".enterText"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_enter_text"
             android:screenOrientation="landscape" >
         </activity>
     </application>

@@ -17,6 +17,8 @@
         android:id="@+id/button"
         android:onClick="tarbijaButtonClicked"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/buttonTextSize" />
 
 </RelativeLayout>

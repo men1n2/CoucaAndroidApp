@@ -7,5 +7,6 @@
     <string name="title_activity_entering_text">enteringTextActivity</string>
     <string name="title_activity_show_name">showNameActivity</string>
     <string name="title_activity_show_person_name">showPersonName</string>
+    <string name="title_activity_enter_text">enterText</string>
 
 </resources>

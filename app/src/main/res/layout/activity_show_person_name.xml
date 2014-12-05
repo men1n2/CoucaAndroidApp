@@ -17,5 +17,6 @@
         android:id="@+id/personNameField"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:textColor="#ffffffff" />
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/buttonTextSize" />
 </RelativeLayout>

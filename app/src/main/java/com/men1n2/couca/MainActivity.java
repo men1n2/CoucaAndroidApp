@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Picture;
 import android.graphics.PixelFormat;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -33,6 +35,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
 
         // Dim System Bar
         // This example uses decor view, but you can use any visible view.
@@ -66,7 +70,9 @@ public class MainActivity extends Activity {
         manager.addView(view, localLayoutParams);
         // ------------------------
 
-        setContentView(R.layout.activity_main);
+        Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/Connect Bold 2014-rec.ttf");
+        Button button = (Button) findViewById(R.id.button);
+        button.setTypeface(fontType);
     }
 
     @Override
@@ -120,7 +126,7 @@ public class MainActivity extends Activity {
     /** Called when the user touches the button */
     public void tarbijaButtonClicked(View view) {
         // Do something in response to button click
-        Intent intent = new Intent(this, enteringTextActivity.class);
+        Intent intent = new Intent(this, enterText.class);
         startActivity(intent);
     }
 
