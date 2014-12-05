@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Picture;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
 import android.os.Bundle;
@@ -18,11 +19,13 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.lang.reflect.Method;
@@ -31,6 +34,8 @@ import java.util.TimerTask;
 
 
 public class MainActivity extends Activity {
+    // Object containing the animation
+    AnimationDrawable introAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +78,10 @@ public class MainActivity extends Activity {
         Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/CoucaAppFont.ttf");
         Button button = (Button) findViewById(R.id.button);
         button.setTypeface(fontType);
+
+        // ImageView introImage = (ImageView) findViewById(R.id.imageView);
+        // introImage.setBackgroundResource(R.drawable.introanimation);
+        // introAnimation = (AnimationDrawable) introImage.getBackground();
     }
 
     @Override
@@ -92,6 +101,22 @@ public class MainActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // Play animation automatically after frames loading
+    @Override
+    public void onWindowFocusChanged (boolean hasFocus) {
+        // introAnimation.start();
+    }
+
+    // Go to next activity on screen touch
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            Intent intent = new Intent(this, enterText.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onTouchEvent(event);
     }
 
     // Prevent exit on Back pressed
