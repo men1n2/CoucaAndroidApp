@@ -70,7 +70,7 @@ public class MainActivity extends Activity {
         manager.addView(view, localLayoutParams);
         // ------------------------
 
-        Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/Connect Bold 2014-rec.ttf");
+        Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/CoucaAppFont.ttf");
         Button button = (Button) findViewById(R.id.button);
         button.setTypeface(fontType);
     }

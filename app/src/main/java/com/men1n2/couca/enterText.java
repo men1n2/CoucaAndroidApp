@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class enterText extends Activity {
 
@@ -72,7 +73,8 @@ public class enterText extends Activity {
             imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
         }
 
-        Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/Connect Bold 2014-rec.ttf");
+        Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/CoucaAppFont.ttf");
+        ((EditText) editField).setTypeface(fontType);
         Button confirmButton = (Button) findViewById(R.id.confirmButton);
         confirmButton.setTypeface(fontType);
     }

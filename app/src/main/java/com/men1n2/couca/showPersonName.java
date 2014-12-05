@@ -78,7 +78,7 @@ public class showPersonName extends Activity {
         personNameTextView = (TextView) findViewById(R.id.personNameField);
         personNameTextView.setText(personName);
         // autoScaleTextViewTextToHeight(textField, personName);
-        Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/Connect Bold 2014-rec.ttf");
+        Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/CoucaAppFont.ttf");
         personNameTextView.setTypeface(fontType);
     }
 
