@@ -9,11 +9,14 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -77,6 +80,16 @@ public class enterText extends Activity {
         ((EditText) editField).setTypeface(fontType);
         Button confirmButton = (Button) findViewById(R.id.confirmButton);
         confirmButton.setTypeface(fontType);
+
+        // To execute code when DONE on keyboard clicked
+        ((EditText) editField).setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    onConfirmClick(getWindow().getDecorView());
+                }
+                return false;
+            }
+        });
     }
 
 

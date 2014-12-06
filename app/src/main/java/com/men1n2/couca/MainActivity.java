@@ -122,15 +122,15 @@ public class MainActivity extends Activity {
     }
 
     // Go to next activity on screen touch
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            Intent intent = new Intent(this, enterText.class);
-            startActivity(intent);
-            finish();
-            return true;
-        }
-        return super.onTouchEvent(event);
-    }
+//    public boolean onTouchEvent(MotionEvent event) {
+//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//            Intent intent = new Intent(this, enterText.class);
+//            startActivity(intent);
+//            finish();
+//            return true;
+//        }
+//        return super.onTouchEvent(event);
+//    }
 
     // Prevent exit on Back pressed
     @Override
