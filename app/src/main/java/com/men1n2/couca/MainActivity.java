@@ -13,6 +13,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import java.lang.ref.SoftReference;
 import java.lang.reflect.Method;
@@ -39,38 +41,7 @@ import java.util.TimerTask;
 
 public class MainActivity extends Activity {
     // Object containing the animation
-    // AnimationDrawable introAnimation;
-    FasterAnimationsContainer mFasterAnimationsContainer;
-    private static final int[] IMAGE_RESOURCES = { R.drawable.introanimframe_00000,
-            R.drawable.introanimframe_00001, R.drawable.introanimframe_00002, R.drawable.introanimframe_00003,
-            R.drawable.introanimframe_00004, R.drawable.introanimframe_00005, R.drawable.introanimframe_00006,
-            R.drawable.introanimframe_00007, R.drawable.introanimframe_00008, R.drawable.introanimframe_00009, R.drawable.introanimframe_00010,
-            R.drawable.introanimframe_00011, R.drawable.introanimframe_00012, R.drawable.introanimframe_00013,
-            R.drawable.introanimframe_00014, R.drawable.introanimframe_00015, R.drawable.introanimframe_00016,
-            R.drawable.introanimframe_00017, R.drawable.introanimframe_00018, R.drawable.introanimframe_00019, R.drawable.introanimframe_00020,
-            R.drawable.introanimframe_00021, R.drawable.introanimframe_00022, R.drawable.introanimframe_00023,
-            R.drawable.introanimframe_00024, R.drawable.introanimframe_00025, R.drawable.introanimframe_00026,
-            R.drawable.introanimframe_00027, R.drawable.introanimframe_00028, R.drawable.introanimframe_00029, R.drawable.introanimframe_00030,
-            R.drawable.introanimframe_00031, R.drawable.introanimframe_00032, R.drawable.introanimframe_00033,
-            R.drawable.introanimframe_00034, R.drawable.introanimframe_00035, R.drawable.introanimframe_00036,
-            R.drawable.introanimframe_00037, R.drawable.introanimframe_00038, R.drawable.introanimframe_00039, R.drawable.introanimframe_00040,
-            R.drawable.introanimframe_00041, R.drawable.introanimframe_00042, R.drawable.introanimframe_00043,
-            R.drawable.introanimframe_00044, R.drawable.introanimframe_00045, R.drawable.introanimframe_00046,
-            R.drawable.introanimframe_00047, R.drawable.introanimframe_00048, R.drawable.introanimframe_00049, R.drawable.introanimframe_00050,
-            R.drawable.introanimframe_00051, R.drawable.introanimframe_00052, R.drawable.introanimframe_00053,
-            R.drawable.introanimframe_00054, R.drawable.introanimframe_00055, R.drawable.introanimframe_00056,
-            R.drawable.introanimframe_00057, R.drawable.introanimframe_00058, R.drawable.introanimframe_00059, R.drawable.introanimframe_00060,
-            R.drawable.introanimframe_00061, R.drawable.introanimframe_00062, R.drawable.introanimframe_00063,
-            R.drawable.introanimframe_00064, R.drawable.introanimframe_00065, R.drawable.introanimframe_00066,
-            R.drawable.introanimframe_00067, R.drawable.introanimframe_00068, R.drawable.introanimframe_00069, R.drawable.introanimframe_00070,
-            R.drawable.introanimframe_00071, R.drawable.introanimframe_00072, R.drawable.introanimframe_00073,
-            R.drawable.introanimframe_00074, R.drawable.introanimframe_00075, R.drawable.introanimframe_00076,
-            R.drawable.introanimframe_00077, R.drawable.introanimframe_00078, R.drawable.introanimframe_00079, R.drawable.introanimframe_00080,
-            R.drawable.introanimframe_00081, R.drawable.introanimframe_00082, R.drawable.introanimframe_00083,
-            R.drawable.introanimframe_00084, R.drawable.introanimframe_00085, R.drawable.introanimframe_00086,
-            R.drawable.introanimframe_00087 };
-
-    private static final int ANIMATION_INTERVAL = 40;// X in ms
+    VideoView introVideo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,12 +85,14 @@ public class MainActivity extends Activity {
         Button button = (Button) findViewById(R.id.button);
         button.setTypeface(fontType);
 
-        ImageView introImage = (ImageView) findViewById(R.id.imageView);
-        // introImage.setBackgroundResource(R.drawable.introanimation);
-        // introAnimation = (AnimationDrawable) introImage.getBackground();
-        mFasterAnimationsContainer = FasterAnimationsContainer.getInstance(introImage);
-        mFasterAnimationsContainer.addAllFrames(IMAGE_RESOURCES, ANIMATION_INTERVAL);
-        mFasterAnimationsContainer.start();
+        introVideo = (VideoView) findViewById(R.id.videoView);
+        introVideo.setVideoPath("android.resource://" + getPackageName() + "/" + R.drawable.introvid);
+        introVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
     }
 
     @Override
@@ -145,6 +118,7 @@ public class MainActivity extends Activity {
     @Override
     public void onWindowFocusChanged (boolean hasFocus) {
         // introAnimation.start();
+        introVideo.start();
     }
 
     // Go to next activity on screen touch
