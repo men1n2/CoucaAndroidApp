@@ -2,10 +2,7 @@ package com.men1n2.couca;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Picture;
 import android.graphics.PixelFormat;
@@ -79,9 +76,9 @@ public class MainActivity extends Activity {
         Button button = (Button) findViewById(R.id.button);
         button.setTypeface(fontType);
 
-        // ImageView introImage = (ImageView) findViewById(R.id.imageView);
-        // introImage.setBackgroundResource(R.drawable.introanimation);
-        // introAnimation = (AnimationDrawable) introImage.getBackground();
+        ImageView introImage = (ImageView) findViewById(R.id.imageView);
+        introImage.setBackgroundResource(R.drawable.introanimation);
+        introAnimation = (AnimationDrawable) introImage.getBackground();
     }
 
     @Override
@@ -106,7 +103,7 @@ public class MainActivity extends Activity {
     // Play animation automatically after frames loading
     @Override
     public void onWindowFocusChanged (boolean hasFocus) {
-        // introAnimation.start();
+        introAnimation.start();
     }
 
     // Go to next activity on screen touch
@@ -156,3 +153,5 @@ public class MainActivity extends Activity {
     }
 
 }
+
+
