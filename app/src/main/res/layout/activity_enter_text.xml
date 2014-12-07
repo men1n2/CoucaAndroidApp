@@ -24,11 +24,12 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="مريڤل"
         android:id="@+id/confirmButton"
         android:layout_below="@+id/personNameEditText"
         android:layout_centerHorizontal="true"
         android:onClick="onConfirmClick"
         android:textSize="@dimen/buttonTextSize"
-        android:textColor="#ffffffff" />
+        android:textColor="#ffffffff"
+        android:background="@drawable/confirmbutton"
+        android:layout_marginTop="30px" />
 </RelativeLayout>

@@ -43,6 +43,9 @@ public class MainActivity extends Activity {
     // Object containing the animation
     VideoView introVideo;
 
+    // Main button to go to the next activity
+    Button button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +85,7 @@ public class MainActivity extends Activity {
         // ------------------------
 
         Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/CoucaAppFont.ttf");
-        Button button = (Button) findViewById(R.id.button);
+        button = (Button) findViewById(R.id.button);
         button.setTypeface(fontType);
 
         introVideo = (VideoView) findViewById(R.id.videoView);
@@ -170,6 +173,7 @@ public class MainActivity extends Activity {
     /** Called when the user touches the button */
     public void tarbijaButtonClicked(View view) {
         // Do something in response to button click
+        button.setBackgroundResource(R.drawable.introbuttonpressed);
         Intent intent = new Intent(this, enterText.class);
         startActivity(intent);
         finish();

@@ -29,6 +29,9 @@ public class enterText extends Activity {
     // Timer to return to the main screen if no action is done
     Timer timer;
 
+    // Button of confirmation
+    Button confirmButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +86,7 @@ public class enterText extends Activity {
 
         Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/CoucaAppFont.ttf");
         ((EditText) editField).setTypeface(fontType);
-        Button confirmButton = (Button) findViewById(R.id.confirmButton);
+        confirmButton = (Button) findViewById(R.id.confirmButton);
         confirmButton.setTypeface(fontType);
 
         // To execute code when DONE on keyboard clicked
@@ -161,6 +164,7 @@ public class enterText extends Activity {
     /** Called when the user touches the button */
     public void onConfirmClick(View view) {
         // Do something in response to button click
+        confirmButton.setBackgroundResource(R.drawable.confirmbuttonpressed);
         EditText inputField = (EditText) findViewById(R.id.personNameEditText);
         // Test if the word is bad or no
         if(testBadWords(inputField.getText().toString())) {
@@ -179,6 +183,7 @@ public class enterText extends Activity {
 
             AlertDialog alert11 = builder1.create();
             alert11.show();
+            confirmButton.setBackgroundResource(R.drawable.confirmbutton);
         }
         else {
             timer.cancel();

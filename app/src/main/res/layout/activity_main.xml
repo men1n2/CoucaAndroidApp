@@ -20,8 +20,10 @@
         android:onClick="tarbijaButtonClicked"
         android:textColor="#ffffffff"
         android:visibility="visible"
-        android:background="@drawable/introbutton"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:background="@drawable/introbutton"
+        android:enabled="true" />
 
 </RelativeLayout>
