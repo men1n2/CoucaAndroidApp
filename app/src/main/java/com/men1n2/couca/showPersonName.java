@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.men1n2.couca.R;
@@ -70,7 +72,7 @@ public class showPersonName extends Activity {
                 restartApp();
             }
         };
-        timer.schedule(timerTask, 3000);
+        timer.schedule(timerTask, 10000);
 
         // Get the message from the intent
         String personName = getIntent().getExtras().getString("personName");
@@ -80,6 +82,10 @@ public class showPersonName extends Activity {
         // autoScaleTextViewTextToHeight(textField, personName);
         Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/CoucaAppFont.ttf");
         personNameTextView.setTypeface(fontType);
+
+        // Animation for the textView of the person's name
+        Animation personNameTextViewAnimation = AnimationUtils.loadAnimation(this, R.anim.shownameanimation);
+        personNameTextView.startAnimation(personNameTextViewAnimation);
     }
 
 
