@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,6 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -31,6 +33,9 @@ public class enterText extends Activity {
 
     // Button of confirmation
     Button confirmButton;
+
+    // Object containing the animation
+    VideoView enterTextVideo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +56,7 @@ public class enterText extends Activity {
         WindowManager.LayoutParams localLayoutParams = new WindowManager.LayoutParams();
         localLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
         localLayoutParams.gravity = Gravity.TOP;
-        localLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|
+        localLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
 
                 // this is to enable the notification to recieve touch events
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
@@ -69,9 +74,29 @@ public class enterText extends Activity {
         manager.addView(view, localLayoutParams);
         // ------------------------
 
+        enterTextVideo = (VideoView) findViewById(R.id.videoView2);
+        enterTextVideo.setVideoPath("android.resource://" + getPackageName() + "/" + R.drawable.entertextvid);
+        enterTextVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
+
+        // Create Timer
+        timer = new Timer();
+        // Add timer task and cycle time
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                restartApp();
+            }
+        };
+        timer.schedule(timerTask, 45000);
+
         // Show keyboard automatically on focus
-        View editField = findViewById(R.id.personNameEditText);
-        if(editField != null) {
+        EditText editField = (EditText) findViewById(R.id.personNameEditText);
+        if (editField != null) {
             editField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -81,11 +106,12 @@ public class enterText extends Activity {
                 }
             });
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
+            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
         }
 
         Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/CoucaAppFont.ttf");
-        ((EditText) editField).setTypeface(fontType);
+        editField.setTypeface(fontType);
+        editField.requestFocus();
         confirmButton = (Button) findViewById(R.id.confirmButton);
         confirmButton.setTypeface(fontType);
 
@@ -98,18 +124,6 @@ public class enterText extends Activity {
                 return false;
             }
         });
-
-        // Create Timer
-        timer = new Timer();
-        // Add timer task and cycle time
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                System.out.println("bof");
-                restartApp();
-            }
-        };
-        timer.schedule(timerTask, 45000);
     }
 
 
@@ -161,13 +175,22 @@ public class enterText extends Activity {
         activityManager.moveTaskToFront(getTaskId(), 0);
     }
 
-    /** Called when the user touches the button */
+    // Play animation automatically after frames loading
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        // introAnimation.start();
+        enterTextVideo.start();
+    }
+
+    /**
+     * Called when the user touches the button
+     */
     public void onConfirmClick(View view) {
         // Do something in response to button click
         confirmButton.setBackgroundResource(R.drawable.confirmbuttonpressed);
         EditText inputField = (EditText) findViewById(R.id.personNameEditText);
         // Test if the word is bad or no
-        if(testBadWords(inputField.getText().toString())) {
+        if (testBadWords(inputField.getText().toString())) {
             // Show Alert if the word is bad word
             inputField.setText("");
             AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
@@ -184,8 +207,7 @@ public class enterText extends Activity {
             AlertDialog alert11 = builder1.create();
             alert11.show();
             confirmButton.setBackgroundResource(R.drawable.confirmbutton);
-        }
-        else {
+        } else {
             timer.cancel();
             Intent intent = new Intent(this, showPersonName.class);
             EditText editText = (EditText) findViewById(R.id.personNameEditText);
@@ -198,18 +220,18 @@ public class enterText extends Activity {
      * To test if the word is a bad word or no
      */
     public static boolean testBadWords(String word) {
-        String[] badWordsArray = {"3asba","aasba","asba","zeb ","zab ","zabb","zebb","zabour","zabbour","ta7an","tahan",
-                "ta77an","9a7ba","ka7ba","kahba","9ahba","miboun","mibouna","3atay","3attay","aattay","taffar","tafar","mag7out",
-                "mak7out","mnayek ","nayek","nik","nike","niq","nique","bachoula","katla","catla","za3ka","zaaka","sorm","terma",
-                "nikommek","nik omek","nik ommek","nik o5tek","nik okhtek","niko5etk","nik bouk ","zabbourommek","zabbouromek",
-                "zabourommek","zabouromek","zok","zock","zokk","zokkommek","zokommek","zokomek","zokkomek","rabbek","rabek","rabb",
-                "rabomek","rabbommek","rabomek","rabbomek","rabommek","dirrabbek","dirabek","dirrabek","dirabbek","dinrabek",
-                "dinrabbek","pute","bitch","fuck","pd","flobb ","flob","chlambout","torch9an","nouna","batrouna","batroun","zebi",
-                "zebbi","nam","nami","namm","bachla","zmonka","terma",
-                "عصبة","زب","زبور","زبر","طحان","طحين","قحبة","قحب","ميبون","ميبونة","عطاي","طفار","مكحوط","منيك","نيك","نياك",
-                "بشلة","بشولة","كتلة","زعكة","زعك","صرم","ترمة","نيك أمك","نيكأمك","نيك أختك","نيكأختك","نيك بوك","زبور أمك","زك",
-                "زك أمك","زكأمك","ربك","رب","رب أمك","ديربك","دربك","دينربك","دنربك","فلب","شلمبوت","شلمبوط","طرشقان","نونة","بترون",
-                "بترونة","بطرونة","بطرون","زبي","نم","نمي","زمنكة"};
+        String[] badWordsArray = {"3asba", "aasba", "asba", "zeb ", "zab ", "zabb", "zebb", "zabour", "zabbour", "ta7an", "tahan",
+                "ta77an", "9a7ba", "ka7ba", "kahba", "9ahba", "miboun", "mibouna", "3atay", "3attay", "aattay", "taffar", "tafar", "mag7out",
+                "mak7out", "mnayek ", "nayek", "nik", "nike", "niq", "nique", "bachoula", "katla", "catla", "za3ka", "zaaka", "sorm", "terma",
+                "nikommek", "nik omek", "nik ommek", "nik o5tek", "nik okhtek", "niko5etk", "nik bouk ", "zabbourommek", "zabbouromek",
+                "zabourommek", "zabouromek", "zok", "zock", "zokk", "zokkommek", "zokommek", "zokomek", "zokkomek", "rabbek", "rabek", "rabb",
+                "rabomek", "rabbommek", "rabomek", "rabbomek", "rabommek", "dirrabbek", "dirabek", "dirrabek", "dirabbek", "dinrabek",
+                "dinrabbek", "pute", "bitch", "fuck", "pd", "flobb ", "flob", "chlambout", "torch9an", "nouna", "batrouna", "batroun", "zebi",
+                "zebbi", "nam", "nami", "namm", "bachla", "zmonka", "terma",
+                "عصبة", "زب", "زبور", "زبر", "طحان", "طحين", "قحبة", "قحب", "ميبون", "ميبونة", "عطاي", "طفار", "مكحوط", "منيك", "نيك", "نياك",
+                "بشلة", "بشولة", "كتلة", "زعكة", "زعك", "صرم", "ترمة", "نيك أمك", "نيكأمك", "نيك أختك", "نيكأختك", "نيك بوك", "زبور أمك", "زك",
+                "زك أمك", "زكأمك", "ربك", "رب", "رب أمك", "ديربك", "دربك", "دينربك", "دنربك", "فلب", "شلمبوت", "شلمبوط", "طرشقان", "نونة", "بترون",
+                "بترونة", "بطرونة", "بطرون", "زبي", "نم", "نمي", "زمنكة"};
         for (String s : badWordsArray) {
             int i = s.indexOf(word);
             if (i >= 0) {
@@ -220,7 +242,9 @@ public class enterText extends Activity {
         return false;
     }
 
-    /** Restart the application */
+    /**
+     * Restart the application
+     */
     public void restartApp() {
         timer.cancel();
         Intent intent = new Intent(this, MainActivity.class);

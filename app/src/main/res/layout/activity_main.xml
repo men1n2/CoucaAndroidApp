@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     tools:context=".MainActivity"
     android:clickable="false"
-    android:background="#ffff0003">
+    android:background="@drawable/bg3">
 
     <VideoView
         android:layout_width="fill_parent"

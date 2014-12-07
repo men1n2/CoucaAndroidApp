@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -15,7 +16,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.men1n2.couca.R;
 
@@ -23,6 +26,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class showPersonName extends Activity {
+    // Object containing the animation
+    VideoView showTextVideo;
+
+    // For name animation
+    TextView personNameTextView;
+    Animation personNameTextViewAnimation;
+    ImageView foregroundImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +54,7 @@ public class showPersonName extends Activity {
         WindowManager.LayoutParams localLayoutParams = new WindowManager.LayoutParams();
         localLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
         localLayoutParams.gravity = Gravity.TOP;
-        localLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|
+        localLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
 
                 // this is to enable the notification to recieve touch events
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
@@ -68,7 +78,6 @@ public class showPersonName extends Activity {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("bof");
                 restartApp();
             }
         };
@@ -76,18 +85,43 @@ public class showPersonName extends Activity {
 
         // Get the message from the intent
         String personName = getIntent().getExtras().getString("personName");
-        TextView personNameTextView;
         personNameTextView = (TextView) findViewById(R.id.personNameField);
         personNameTextView.setText(personName);
         // autoScaleTextViewTextToHeight(textField, personName);
         Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/CoucaAppFont.ttf");
         personNameTextView.setTypeface(fontType);
 
-        // Animation for the textView of the person's name
-        Animation personNameTextViewAnimation = AnimationUtils.loadAnimation(this, R.anim.shownameanimation);
-        personNameTextView.startAnimation(personNameTextViewAnimation);
-    }
+        showTextVideo = (VideoView) findViewById(R.id.videoView3);
+        showTextVideo.setVideoPath("android.resource://" + getPackageName() + "/" + R.drawable.shownamevid);
+        showTextVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
 
+        // Animation for the textView of the person's name
+        personNameTextViewAnimation = AnimationUtils.loadAnimation(this, R.anim.shownameanimation);
+        personNameTextView.startAnimation(personNameTextViewAnimation);
+        foregroundImage = (ImageView) findViewById(R.id.fgImageView);
+        // Create Timer
+        Timer timer2 = new Timer();
+        // Add timer task and cycle time
+        TimerTask timerTask2 = new TimerTask() {
+            @Override
+            public void run() {
+                // This to run the code on the main UI thread and avoid exception
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        foregroundImage.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        };
+        timer2.schedule(timerTask2, 1000);
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -137,93 +171,75 @@ public class showPersonName extends Activity {
         activityManager.moveTaskToFront(getTaskId(), 0);
     }
 
-    /** To scale TextView to the text */
-    public static void autoScaleTextViewTextToHeight(final TextView tv, String s)
-    {
-        float currentWidth=tv.getPaint().measureText(s);
+    // Play animation automatically after frames loading
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        // introAnimation.start();
+        showTextVideo.start();
+    }
+
+    /**
+     * To scale TextView to the text
+     */
+    public static void autoScaleTextViewTextToHeight(final TextView tv, String s) {
+        float currentWidth = tv.getPaint().measureText(s);
         int scalingFactor = 0;
         final int characters = s.length();
         //scale based on # of characters in the string
-        if(characters<10)
-        {
+        if (characters < 10) {
             scalingFactor = 2;
         }
         /*else if(characters>=5 && characters<10)
         {
             scalingFactor = 2;
         }*/
-        else if(characters>=10 && characters<15)
-        {
+        else if (characters >= 10 && characters < 15) {
             scalingFactor = 3;
-        }
-        else if(characters>=15 && characters<20)
-        {
+        } else if (characters >= 15 && characters < 20) {
             scalingFactor = 3;
-        }
-        else if(characters>=20 && characters<25)
-        {
+        } else if (characters >= 20 && characters < 25) {
             scalingFactor = 3;
-        }
-        else if(characters>=25 && characters<30)
-        {
+        } else if (characters >= 25 && characters < 30) {
             scalingFactor = 3;
-        }
-        else if(characters>=30 && characters<35)
-        {
+        } else if (characters >= 30 && characters < 35) {
             scalingFactor = 3;
-        }
-        else if(characters>=35 && characters<40)
-        {
+        } else if (characters >= 35 && characters < 40) {
             scalingFactor = 3;
-        }
-        else if(characters>=40 && characters<45)
-        {
+        } else if (characters >= 40 && characters < 45) {
             scalingFactor = 3;
-        }
-        else if(characters>=45 && characters<50)
-        {
+        } else if (characters >= 45 && characters < 50) {
             scalingFactor = 3;
-        }
-        else if(characters>=50 && characters<55)
-        {
+        } else if (characters >= 50 && characters < 55) {
             scalingFactor = 3;
-        }
-        else if(characters>=55 && characters<60)
-        {
+        } else if (characters >= 55 && characters < 60) {
             scalingFactor = 3;
-        }
-        else if(characters>=60 && characters<65)
-        {
+        } else if (characters >= 60 && characters < 65) {
             scalingFactor = 3;
-        }
-        else if(characters>=65 && characters<70)
-        {
+        } else if (characters >= 65 && characters < 70) {
             scalingFactor = 3;
-        }
-        else if(characters>=70 && characters<75)
-        {
+        } else if (characters >= 70 && characters < 75) {
             scalingFactor = 3;
-        }
-        else if(characters>=75)
-        {
+        } else if (characters >= 75) {
             scalingFactor = 5;
         }
 
         //System.out.println(((int)Math.ceil(currentWidth)/tv.getWidth()+scalingFactor));
         //the +scalingFactor is important... increase this if nec. later
-        while((((int)Math.ceil(currentWidth)/tv.getWidth()+scalingFactor)*tv.getTextSize())<tv.getHeight())
-        {
-            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, tv.getTextSize()+0.25f);
-            currentWidth=tv.getPaint().measureText(s);
+        while ((((int) Math.ceil(currentWidth) / tv.getWidth() + scalingFactor) * tv.getTextSize()) < tv.getHeight()) {
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, tv.getTextSize() + 0.25f);
+            currentWidth = tv.getPaint().measureText(s);
             //System.out.println(((int)Math.ceil(currentWidth)/tv.getWidth()+scalingFactor));
         }
 
         tv.setText(s);
     }
 
-    /** Restart the application */
+    /**
+     * Restart the application
+     */
     public void restartApp() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
 }

@@ -66,7 +66,7 @@ public class MainActivity extends Activity {
         WindowManager.LayoutParams localLayoutParams = new WindowManager.LayoutParams();
         localLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
         localLayoutParams.gravity = Gravity.TOP;
-        localLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|
+        localLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
 
                 // this is to enable the notification to recieve touch events
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
@@ -119,7 +119,7 @@ public class MainActivity extends Activity {
 
     // Play animation automatically after frames loading
     @Override
-    public void onWindowFocusChanged (boolean hasFocus) {
+    public void onWindowFocusChanged(boolean hasFocus) {
         // introAnimation.start();
         introVideo.start();
     }
@@ -170,7 +170,9 @@ public class MainActivity extends Activity {
         // mFasterAnimationsContainer.stop();
     }
 
-    /** Called when the user touches the button */
+    /**
+     * Called when the user touches the button
+     */
     public void tarbijaButtonClicked(View view) {
         // Do something in response to button click
         button.setBackgroundResource(R.drawable.introbuttonpressed);
