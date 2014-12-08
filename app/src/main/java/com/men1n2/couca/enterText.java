@@ -10,6 +10,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -129,7 +130,6 @@ public class enterText extends Activity {
         });
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -210,14 +210,27 @@ public class enterText extends Activity {
             alert11.show();
             confirmButton.setBackgroundResource(R.drawable.confirmbutton);
         } else {
-            InputMethodManager imm = (InputMethodManager)getSystemService(
+            InputMethodManager imm = (InputMethodManager) getSystemService(
                     Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(editField.getWindowToken(), 0);
+            saveNameOnFile(editField.getText().toString());
             timer.cancel();
             Intent intent = new Intent(this, showPersonName.class);
             intent.putExtra("personName", editField.getText().toString());
             startActivity(intent);
         }
+    }
+
+    /**
+     * Save the name on file on external storage
+     */
+    private boolean saveNameOnFile(String personName) {
+        /* Checks if external storage is available for read and write */
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            // Write on file
+            return true;
+        } else return false;
     }
 
     /**
