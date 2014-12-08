@@ -34,6 +34,9 @@ public class showPersonName extends Activity {
     Animation personNameTextViewAnimation;
     ImageView foregroundImage;
 
+    // Person name passed from previous activity
+    String personName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,14 +86,6 @@ public class showPersonName extends Activity {
         };
         timer.schedule(timerTask, 10000);
 
-        // Get the message from the intent
-        String personName = getIntent().getExtras().getString("personName");
-        personNameTextView = (TextView) findViewById(R.id.personNameField);
-        personNameTextView.setText(personName);
-        // autoScaleTextViewTextToHeight(textField, personName);
-        Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/CoucaAppFont.ttf");
-        personNameTextView.setTypeface(fontType);
-
         showTextVideo = (VideoView) findViewById(R.id.videoView3);
         showTextVideo.setVideoPath("android.resource://" + getPackageName() + "/" + R.drawable.shownamevid);
         showTextVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -100,10 +95,18 @@ public class showPersonName extends Activity {
             }
         });
 
+        // Get the message from the intent
+        personName = getIntent().getExtras().getString("personName");
+        personNameTextView = (TextView) findViewById(R.id.personNameField);
+        personNameTextView.setText(personName);
+        Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/CoucaAppFont.ttf");
+        personNameTextView.setTypeface(fontType);
+
         // Animation for the textView of the person's name
         personNameTextViewAnimation = AnimationUtils.loadAnimation(this, R.anim.shownameanimation);
         personNameTextView.startAnimation(personNameTextViewAnimation);
         foregroundImage = (ImageView) findViewById(R.id.fgImageView);
+
         // Create Timer
         Timer timer2 = new Timer();
         // Add timer task and cycle time
@@ -120,7 +123,6 @@ public class showPersonName extends Activity {
             }
         };
         timer2.schedule(timerTask2, 1000);
-
     }
 
     @Override
@@ -176,51 +178,23 @@ public class showPersonName extends Activity {
     public void onWindowFocusChanged(boolean hasFocus) {
         // introAnimation.start();
         showTextVideo.start();
+        autoScaleTextViewTextToHeight(personNameTextView, personName);
     }
 
     /**
      * To scale TextView to the text
-     */
+
     public static void autoScaleTextViewTextToHeight(final TextView tv, String s) {
         float currentWidth = tv.getPaint().measureText(s);
         int scalingFactor = 0;
         final int characters = s.length();
         //scale based on # of characters in the string
-        if (characters < 10) {
-            scalingFactor = 2;
-        }
-        /*else if(characters>=5 && characters<10)
-        {
-            scalingFactor = 2;
-        }*/
-        else if (characters >= 10 && characters < 15) {
-            scalingFactor = 3;
-        } else if (characters >= 15 && characters < 20) {
-            scalingFactor = 3;
-        } else if (characters >= 20 && characters < 25) {
-            scalingFactor = 3;
-        } else if (characters >= 25 && characters < 30) {
-            scalingFactor = 3;
-        } else if (characters >= 30 && characters < 35) {
-            scalingFactor = 3;
-        } else if (characters >= 35 && characters < 40) {
-            scalingFactor = 3;
-        } else if (characters >= 40 && characters < 45) {
-            scalingFactor = 3;
-        } else if (characters >= 45 && characters < 50) {
-            scalingFactor = 3;
-        } else if (characters >= 50 && characters < 55) {
-            scalingFactor = 3;
-        } else if (characters >= 55 && characters < 60) {
-            scalingFactor = 3;
-        } else if (characters >= 60 && characters < 65) {
-            scalingFactor = 3;
-        } else if (characters >= 65 && characters < 70) {
-            scalingFactor = 3;
-        } else if (characters >= 70 && characters < 75) {
-            scalingFactor = 3;
-        } else if (characters >= 75) {
-            scalingFactor = 5;
+        if (characters < 5) {
+            scalingFactor = 100;
+        } else if (characters >= 5 && characters < 7) {
+            scalingFactor = 200;
+        } else if (characters >= 7 && characters < 15) {
+            scalingFactor = 300;
         }
 
         //System.out.println(((int)Math.ceil(currentWidth)/tv.getWidth()+scalingFactor));
@@ -230,8 +204,19 @@ public class showPersonName extends Activity {
             currentWidth = tv.getPaint().measureText(s);
             //System.out.println(((int)Math.ceil(currentWidth)/tv.getWidth()+scalingFactor));
         }
-
         tv.setText(s);
+    }
+     */
+    public static void autoScaleTextViewTextToHeight(final TextView tv, String s) {
+        final int characters = s.length();
+        //scale based on # of characters in the string
+        if (characters < 4) {
+            tv.setTextSize(300f);
+        } else if (characters >= 4 && characters < 7) {
+            tv.setTextSize(250f);
+        } else if (characters >= 7 && characters < 15) {
+            tv.setTextSize(200f);
+        }
     }
 
     /**

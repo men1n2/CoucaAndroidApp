@@ -5,9 +5,9 @@
 
     <translate
         android:fromXDelta="0"
-        android:fromYDelta="700"
+        android:fromYDelta="1500"
         android:toXDelta="0"
         android:toYDelta="0"
         android:duration="500"
-        android:startOffset="1250" />
+        android:startOffset="1100" />
 </set>

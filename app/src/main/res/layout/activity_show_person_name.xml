@@ -22,7 +22,6 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:textColor="#ffffffff"
-        android:textSize="@dimen/showNameSize"
         android:maxLines="1" />
 
     <ImageView
@@ -32,7 +31,7 @@
         android:scaleType="fitXY"
         android:adjustViewBounds="false"
         android:src="@drawable/bg2"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
