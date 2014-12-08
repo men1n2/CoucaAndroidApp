@@ -37,6 +37,9 @@ public class enterText extends Activity {
     // Object containing the animation
     VideoView enterTextVideo;
 
+    // Text Field
+    EditText editField;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +98,7 @@ public class enterText extends Activity {
         timer.schedule(timerTask, 45000);
 
         // Show keyboard automatically on focus
-        EditText editField = (EditText) findViewById(R.id.personNameEditText);
+        editField = (EditText) findViewById(R.id.personNameEditText);
         if (editField != null) {
             editField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
@@ -116,7 +119,7 @@ public class enterText extends Activity {
         confirmButton.setTypeface(fontType);
 
         // To execute code when DONE on keyboard clicked
-        ((EditText) editField).setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        editField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                     onConfirmClick(getWindow().getDecorView());
@@ -208,10 +211,12 @@ public class enterText extends Activity {
             alert11.show();
             confirmButton.setBackgroundResource(R.drawable.confirmbutton);
         } else {
+            InputMethodManager imm = (InputMethodManager)getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(editField.getWindowToken(), 0);
             timer.cancel();
             Intent intent = new Intent(this, showPersonName.class);
-            EditText editText = (EditText) findViewById(R.id.personNameEditText);
-            intent.putExtra("personName", editText.getText().toString());
+            intent.putExtra("personName", editField.getText().toString());
             startActivity(intent);
         }
     }

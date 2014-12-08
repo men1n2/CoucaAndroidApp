@@ -9,5 +9,5 @@
         android:toXDelta="0"
         android:toYDelta="0"
         android:duration="500"
-        android:startOffset="1500" />
+        android:startOffset="1250" />
 </set>
