@@ -179,6 +179,7 @@ public class showPersonName extends Activity {
         // introAnimation.start();
         showTextVideo.start();
         autoScaleTextViewTextToHeight(personNameTextView, personName);
+        personNameTextView.setPadding(0, 0, 0, 100);
     }
 
     /**
@@ -211,11 +212,15 @@ public class showPersonName extends Activity {
         final int characters = s.length();
         //scale based on # of characters in the string
         if (characters < 4) {
-            tv.setTextSize(300f);
+            tv.setTextSize(450f);
         } else if (characters >= 4 && characters < 7) {
-            tv.setTextSize(250f);
-        } else if (characters >= 7 && characters < 15) {
-            tv.setTextSize(200f);
+            tv.setTextSize(400f);
+        } else if (characters >= 7 && characters < 10) {
+            tv.setTextSize(280f);
+        } else if (characters >= 10 && characters < 13) {
+            tv.setTextSize(230f);
+        } else if (characters >= 13 && characters < 20) {
+            tv.setTextSize(180f);
         }
     }
 

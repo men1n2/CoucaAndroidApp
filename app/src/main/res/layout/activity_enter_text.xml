@@ -20,9 +20,10 @@
         android:id="@+id/personNameEditText"
         android:textColor="#ffffffff"
         android:textSize="@dimen/buttonTextSize"
-        android:maxLength="10"
+        android:maxLength="15"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:minWidth="100dp" />
         <!--To make the container ems*n with n = size of characters
             android:ems="7"-->
 

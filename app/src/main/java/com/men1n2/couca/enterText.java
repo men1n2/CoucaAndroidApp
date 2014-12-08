@@ -197,8 +197,8 @@ public class enterText extends Activity {
             // Show Alert if the word is bad word
             inputField.setText("");
             AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-            builder1.setTitle("أزبي !");
-            builder1.setMessage("نقص بلا كلام منيك أساحبي :(");
+            builder1.setTitle("Hey !");
+            builder1.setMessage("بدون كلام بذيء أيها الأبله");
             builder1.setCancelable(true);
             builder1.setNeutralButton(android.R.string.ok,
                     new DialogInterface.OnClickListener() {
@@ -206,7 +206,6 @@ public class enterText extends Activity {
                             dialog.cancel();
                         }
                     });
-
             AlertDialog alert11 = builder1.create();
             alert11.show();
             confirmButton.setBackgroundResource(R.drawable.confirmbutton);
@@ -232,11 +231,11 @@ public class enterText extends Activity {
                 "zabourommek", "zabouromek", "zok", "zock", "zokk", "zokkommek", "zokommek", "zokomek", "zokkomek", "rabbek", "rabek", "rabb",
                 "rabomek", "rabbommek", "rabomek", "rabbomek", "rabommek", "dirrabbek", "dirabek", "dirrabek", "dirabbek", "dinrabek",
                 "dinrabbek", "pute", "bitch", "fuck", "pd", "flobb ", "flob", "chlambout", "torch9an", "nouna", "batrouna", "batroun", "zebi",
-                "zebbi", "nam", "nami", "namm", "bachla", "zmonka", "terma",
+                "zebbi", "nam", "nami", "namm", "bachla", "zmonka", "terma", "tartour", "beji", "bajbouj", "wral", "marzouki", "moncef",
                 "عصبة", "زب", "زبور", "زبر", "طحان", "طحين", "قحبة", "قحب", "ميبون", "ميبونة", "عطاي", "طفار", "مكحوط", "منيك", "نيك", "نياك",
                 "بشلة", "بشولة", "كتلة", "زعكة", "زعك", "صرم", "ترمة", "نيك أمك", "نيكأمك", "نيك أختك", "نيكأختك", "نيك بوك", "زبور أمك", "زك",
                 "زك أمك", "زكأمك", "ربك", "رب", "رب أمك", "ديربك", "دربك", "دينربك", "دنربك", "فلب", "شلمبوت", "شلمبوط", "طرشقان", "نونة", "بترون",
-                "بترونة", "بطرونة", "بطرون", "زبي", "نم", "نمي", "زمنكة"};
+                "بترونة", "بطرونة", "بطرون", "زبي", "نم", "نمي", "زمنكة", "باجي", "المنصف", "المرزوقي", "الورل", "البجبوج", "الطرطور"};
         for (String s : badWordsArray) {
             int i = s.indexOf(word);
             if (i >= 0) {

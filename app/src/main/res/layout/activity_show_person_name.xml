@@ -19,10 +19,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/personNameField"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:textColor="#ffffffff"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:layout_centerInParent="true" />
 
     <ImageView
         android:layout_width="fill_parent"
