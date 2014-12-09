@@ -25,6 +25,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -229,6 +234,47 @@ public class enterText extends Activity {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             // Write on file
+            // String pathToExternalStorage = Environment.getExternalStorageDirectory().toString();
+            File folder = new File(File.separator + "storage" + File.separator + "sdcard1" + File.separator + "Tarbijet");
+            if (!folder.exists()) {
+                if (!folder.mkdirs()) {
+                    return false;
+                }
+            }
+            // New line seperator
+            final String nlSeparator = System.getProperty("line.separator");
+            File myFile = new File(folder , "Tarbijet.txt");
+            if(myFile.exists())
+            {
+                try
+                {
+                    FileOutputStream fOut = new FileOutputStream(myFile, true);
+                    OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut, "utf8");
+                    myOutWriter.append(personName);
+                    myOutWriter.append(nlSeparator);
+                    myOutWriter.flush();
+                    myOutWriter.close();
+                    fOut.close();
+                } catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                try {
+                    myFile.createNewFile();
+                    FileOutputStream fOut = new FileOutputStream(myFile, true);
+                    OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut, "utf8");
+                    myOutWriter.append(personName);
+                    myOutWriter.append(nlSeparator);
+                    myOutWriter.flush();
+                    myOutWriter.close();
+                    fOut.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             return true;
         } else return false;
     }
