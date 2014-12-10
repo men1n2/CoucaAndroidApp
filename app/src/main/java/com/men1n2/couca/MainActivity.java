@@ -176,7 +176,7 @@ public class MainActivity extends Activity {
     public void tarbijaButtonClicked(View view) {
         // Do something in response to button click
         button.setBackgroundResource(R.drawable.introbuttonpressed);
-        Intent intent = new Intent(this, enterText.class);
+        Intent intent = new Intent(this, changeLanguageTutorial.class);
         startActivity(intent);
         finish();
     }

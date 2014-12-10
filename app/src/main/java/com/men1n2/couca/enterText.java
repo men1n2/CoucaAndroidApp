@@ -6,6 +6,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -26,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -37,6 +41,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -60,6 +65,9 @@ public class enterText extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Define custom transition between the previous and this activity
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+
         setContentView(R.layout.activity_enter_text);
 
         // Dim System Bar
@@ -94,6 +102,14 @@ public class enterText extends Activity {
         manager.addView(view, localLayoutParams);
         // ------------------------
 
+        Context context = this;
+        Resources res = context.getResources();
+        // Change locale settings in the app.
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.locale = new Locale("en", "US");
+        res.updateConfiguration(conf, dm);
+
         enterTextVideo = (VideoView) findViewById(R.id.videoView2);
         enterTextVideo.setVideoPath("android.resource://" + getPackageName() + "/" + R.drawable.entertextvid);
         enterTextVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -114,6 +130,7 @@ public class enterText extends Activity {
         };
         // Timer cycle time
         timer.schedule(timerTask, 45000);
+
 
         // Show keyboard automatically on focus
         editField = (AutoCompleteTextView) findViewById(R.id.personNameEditText);
@@ -151,6 +168,7 @@ public class enterText extends Activity {
                 // Timer cycle time
                 timer.schedule(timerTask, 30000);
             }
+
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
@@ -283,11 +301,9 @@ public class enterText extends Activity {
             }
             // New line seperator
             final String nlSeparator = System.getProperty("line.separator");
-            File myFile = new File(folder , "Tarbijet.txt");
-            if(myFile.exists())
-            {
-                try
-                {
+            File myFile = new File(folder, "Tarbijet.txt");
+            if (myFile.exists()) {
+                try {
                     FileOutputStream fOut = new FileOutputStream(myFile, true);
                     OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut, "utf8");
                     myOutWriter.append(personName);
@@ -295,13 +311,10 @@ public class enterText extends Activity {
                     myOutWriter.flush();
                     myOutWriter.close();
                     fOut.close();
-                } catch(Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-            else
-            {
+            } else {
                 try {
                     myFile.createNewFile();
                     FileOutputStream fOut = new FileOutputStream(myFile, true);
@@ -361,7 +374,7 @@ public class enterText extends Activity {
 
                 listOfNames = new ArrayList<String>();
 
-                while (scanner.hasNextLine()){
+                while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
                     listOfNames.add(line);
                 }

@@ -8,17 +8,17 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
         android:largeHeap="true"
-        android:hardwareAccelerated="true" >
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:noHistory="true" >
+            android:noHistory="true"
+            android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 // Make the default activity a launcher, to prevent Home button from exiting the application
@@ -31,15 +31,22 @@
             android:name=".showPersonName"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_show_person_name"
-            android:screenOrientation="landscape"
-            android:noHistory="true" >
+            android:noHistory="true"
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name=".enterText"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_enter_text"
-            android:screenOrientation="landscape"
-            android:noHistory="true" >
+            android:noHistory="true"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".changeLanguageTutorial"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_change_language_tutorial"
+            android:noHistory="true"
+            android:screenOrientation="landscape">
         </activity>
     </application>
 

@@ -2,41 +2,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.men1n2.couca.enterText"
+    tools:context="com.men1n2.couca.changeLanguageTutorial"
     android:background="@drawable/bg3" >
 
     <VideoView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/videoView2"
+        android:id="@+id/videoView4"
         android:layout_alignParentTop="false"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true" />
 
-    <AutoCompleteTextView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:id="@+id/personNameEditText"
+        android:id="@+id/editText"
         android:textColor="#ffffffff"
-        android:textSize="@dimen/buttonTextSize"
+        android:textSize="100px"
         android:maxLength="15"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:minWidth="300dp" />
-        <!--To make the container ems*n with n = size of characters
-            android:ems="7"-->
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/confirmButton"
-        android:layout_below="@+id/personNameEditText"
+        android:id="@+id/button2"
+        android:layout_below="@+id/editText"
         android:layout_centerHorizontal="true"
-        android:onClick="onConfirmClick"
-        android:textSize="@dimen/buttonTextSize"
+        android:textSize="100px"
         android:textColor="#ffffffff"
         android:background="@drawable/confirmbutton"
-        android:layout_marginTop="45px" />
+        android:layout_marginTop="65px"/>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_alignTop="@+id/videoView4"
+        android:layout_alignStart="@+id/videoView4"
+        android:background="@drawable/changelanguagetutorial" />
 </RelativeLayout>
