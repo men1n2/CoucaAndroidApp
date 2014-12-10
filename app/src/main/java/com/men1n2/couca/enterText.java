@@ -11,6 +11,8 @@ import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -20,16 +22,22 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.VideoView;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,7 +52,10 @@ public class enterText extends Activity {
     VideoView enterTextVideo;
 
     // Text Field
-    EditText editField;
+    AutoCompleteTextView editField;
+
+    // List of accepted names
+    List<String> listOfNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,17 +105,18 @@ public class enterText extends Activity {
 
         // Create Timer
         timer = new Timer();
-        // Add timer task and cycle time
+        // Add timer task
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
                 restartApp();
             }
         };
+        // Timer cycle time
         timer.schedule(timerTask, 45000);
 
         // Show keyboard automatically on focus
-        editField = (EditText) findViewById(R.id.personNameEditText);
+        editField = (AutoCompleteTextView) findViewById(R.id.personNameEditText);
         if (editField != null) {
             editField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
@@ -117,6 +129,34 @@ public class enterText extends Activity {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
         }
+
+        // Populate the text field with names to autocomplete with
+        readNameListFromTextFile();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, listOfNames);
+        editField.setThreshold(1);
+        editField.setAdapter(adapter);
+        editField.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                timer.cancel();
+                // Create Timer
+                timer = new Timer();
+                // Add timer task
+                TimerTask timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        restartApp();
+                    }
+                };
+                // Timer cycle time
+                timer.schedule(timerTask, 30000);
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
 
         Typeface fontType = Typeface.createFromAsset(getAssets(), "fonts/CoucaAppFont.ttf");
         editField.setTypeface(fontType);
@@ -203,7 +243,7 @@ public class enterText extends Activity {
             inputField.setText("");
             AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
             builder1.setTitle("Hey !");
-            builder1.setMessage("بدون كلام بذيء أيها الأبله");
+            builder1.setMessage("لازمك تختار تربيجة مالليستة !");
             builder1.setCancelable(true);
             builder1.setNeutralButton(android.R.string.ok,
                     new DialogInterface.OnClickListener() {
@@ -290,11 +330,11 @@ public class enterText extends Activity {
                 "zabourommek", "zabouromek", "zok", "zock", "zokk", "zokkommek", "zokommek", "zokomek", "zokkomek", "rabbek", "rabek", "rabb",
                 "rabomek", "rabbommek", "rabomek", "rabbomek", "rabommek", "dirrabbek", "dirabek", "dirrabek", "dirabbek", "dinrabek",
                 "dinrabbek", "pute", "bitch", "fuck", "pd", "flobb ", "flob", "chlambout", "torch9an", "nouna", "batrouna", "batroun", "zebi",
-                "zebbi", "nam", "nami", "namm", "bachla", "zmonka", "terma", "tartour", "beji", "bajbouj", "wral", "marzouki", "moncef",
+                "zebbi", "nam", "nami", "namm", "bachla", "zmonka", "terma", "tartour", "bajbouj", "wral", "marzouki", "3asbet",
                 "عصبة", "زب", "زبور", "زبر", "طحان", "طحين", "قحبة", "قحب", "ميبون", "ميبونة", "عطاي", "طفار", "مكحوط", "منيك", "نيك", "نياك",
                 "بشلة", "بشولة", "كتلة", "زعكة", "زعك", "صرم", "ترمة", "نيك أمك", "نيكأمك", "نيك أختك", "نيكأختك", "نيك بوك", "زبور أمك", "زك",
                 "زك أمك", "زكأمك", "ربك", "رب", "رب أمك", "ديربك", "دربك", "دينربك", "دنربك", "فلب", "شلمبوت", "شلمبوط", "طرشقان", "نونة", "بترون",
-                "بترونة", "بطرونة", "بطرون", "زبي", "نم", "نمي", "زمنكة", "باجي", "المنصف", "المرزوقي", "الورل", "البجبوج", "الطرطور"};
+                "بترونة", "بطرونة", "بطرون", "زبي", "نم", "نمي", "زمنكة", "المرزوقي", "الورل", "البجبوج", "الطرطور", "العصبات"};
         for (String s : badWordsArray) {
             int i = s.indexOf(word);
             if (i >= 0) {
@@ -303,6 +343,35 @@ public class enterText extends Activity {
             }
         }
         return false;
+    }
+
+    /**
+     * To populate the names' array from text file on the SD card
+     */
+    private void readNameListFromTextFile() {
+        String fpath = File.separator + "storage" + File.separator + "sdcard1" + File.separator
+                + "Tarbijet" + File.separator + "listOfTarbijet.csv";
+        File file = null;
+        try {
+            file = new File(fpath);
+
+            Scanner scanner = null;
+            try {
+                scanner = new Scanner(new FileInputStream(file));
+
+                listOfNames = new ArrayList<String>();
+
+                while (scanner.hasNextLine()){
+                    String line = scanner.nextLine();
+                    listOfNames.add(line);
+                }
+                scanner.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

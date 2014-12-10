@@ -84,7 +84,7 @@ public class showPersonName extends Activity {
                 restartApp();
             }
         };
-        timer.schedule(timerTask, 10000);
+        timer.schedule(timerTask, 30000);
 
         showTextVideo = (VideoView) findViewById(R.id.videoView3);
         showTextVideo.setVideoPath("android.resource://" + getPackageName() + "/" + R.drawable.shownamevid);
