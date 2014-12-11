@@ -144,70 +144,8 @@ public class enterText extends Activity {
         }
 
         // Populate the text field with names to autocomplete with
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, listOfNames) {
-            public ArrayList<String> suggestions = new ArrayList<String>();
-            
-            @Override
-            public Filter getFilter() {
-                return nameFilter;
-            }
-
-            Filter nameFilter = new Filter() {
-                @Override
-                public String convertResultToString(Object resultValue) {
-                    String str = (String) resultValue;
-                    return str;
-                }
-                @Override
-                protected FilterResults performFiltering(CharSequence charSequence) {
-                    System.out.println("#### Filterin999...");
-                    suggestions.clear();
-                    readNameListFromTextFile();
-                    if(charSequence != null) {
-                        int index = 0;
-                        String testString = "";
-                        for (String s : listOfNames) {
-                            testString = deleteUmlauts(s);
-                            if (testString.length() >= charSequence.length()){
-                                /*if (charSequence.toString().toLowerCase().contains(testString.substring(0, charSequence.length()-1).toLowerCase())) {
-                                    System.out.println("#### Tghueeee");
-                                    System.out.println("#### To test : " + listOfNames.get(index));
-                                    System.out.println("### Its substr = " + testString.substring(0, charSequence.length()));
-                                    System.out.println("#### Suggest : " + charSequence);
-                                    suggestions.add(listOfNames.get(index));
-                                }*/
-                                int counter = 0;
-                                for(int j = 0; j < charSequence.length(); j++) {
-                                    System.out.println("### Comparing : " + charSequence.toString().charAt(j) + " || " + testString.charAt(j));
-                                    if(charSequence.toString().toLowerCase().charAt(j) == testString.toLowerCase().charAt(j)) counter++;
-                                }
-                                if(counter == charSequence.length()) suggestions.add(listOfNames.get(index));
-                            }
-                            index++;
-                        }
-                        FilterResults filterResults = new FilterResults();
-                        filterResults.values = suggestions;
-                        filterResults.count = suggestions.size();
-                        System.out.println("#### N of suggs = " + suggestions.size());
-                        return filterResults;
-                    } else {
-                        return new FilterResults();
-                    }
-                }
-                @Override
-                protected void publishResults(CharSequence constraint, FilterResults results) {
-                    List<String> filteredList = (List<String>) results.values;
-                    if(results != null && results.count > 0) {
-                        clear();
-                        for (String c : filteredList) {
-                            add(c);
-                        }
-                        notifyDataSetChanged();
-                    }
-                }
-            };
-        };
+        final ArrayAdapter<String> adapter = new CustomAdapter(this,
+                android.R.layout.simple_dropdown_item_1line, (ArrayList<String>)listOfNames);
         editField.setThreshold(1);
         editField.setAdapter(adapter);
         editField.addTextChangedListener(new TextWatcher() {
@@ -236,7 +174,7 @@ public class enterText extends Activity {
             }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -320,9 +258,9 @@ public class enterText extends Activity {
         confirmButton.setBackgroundResource(R.drawable.confirmbuttonpressed);
         EditText inputField = (EditText) findViewById(R.id.personNameEditText);
         // Test if the word is bad or no
-        if (!testPermittedWords(inputField.getText().toString())) {
+        int indexOfPermittedWord = testPermittedWords(inputField.getText().toString().toLowerCase());
+        if (indexOfPermittedWord == -1) {
             // Show Alert if the word is bad word
-            inputField.setText("");
             AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
             builder1.setTitle("Hey !");
             builder1.setMessage("لازمك تختار تربيجة مالليستة !");
@@ -336,10 +274,12 @@ public class enterText extends Activity {
             AlertDialog alert11 = builder1.create();
             alert11.show();
             confirmButton.setBackgroundResource(R.drawable.confirmbutton);
+            inputField.setText("");
         } else {
             InputMethodManager imm = (InputMethodManager) getSystemService(
                     Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(editField.getWindowToken(), 0);
+            editField.setText(listOfNames.get(indexOfPermittedWord));
             saveNameOnFile(editField.getText().toString());
             timer.cancel();
             Intent intent = new Intent(this, showPersonName.class);
@@ -399,15 +339,20 @@ public class enterText extends Activity {
     /**
      * To test if the word entered is on the list or no
      */
-    private boolean testPermittedWords(String word) {
+    private int testPermittedWords(String word) {
+        int index = 0;
         for (String s : listOfNames) {
-            int i = s.indexOf(word);
-            if (i >= 0) {
-                // found a match to "word" at offset i
-                return true;
+            String testString = deleteUmlauts(s);
+            int counter = 0;
+            if (testString.length() == word.length()){
+                for(int j = 0; j < word.length(); j++) {
+                    if(word.toLowerCase().charAt(j) == testString.toLowerCase().charAt(j)) counter++;
+                }
             }
+            if(counter == word.length()) return index;
+            index++;
         }
-        return false;
+        return -1;
     }
 
     /**
@@ -527,6 +472,77 @@ public class enterText extends Activity {
         input = input.replaceAll("\u0670", "");//ARABIC LETTER SUPERSCRIPT ALEF
 
         return input;
+    }
+
+    public class CustomAdapter extends ArrayAdapter<String> {
+
+        private ArrayList<String> original;
+        private ArrayList<String> suggestions;
+        private Filter filter;
+
+
+        public CustomAdapter(Context context, int textViewResourceId, ArrayList<String> items) {
+            super(context, textViewResourceId, items);
+
+            this.original = new ArrayList<String>(items);
+            this.suggestions = new ArrayList<String>(items);
+            this.filter = new nameFilter();
+        }
+
+        @Override
+        public Filter getFilter() {
+            return filter;
+        }
+
+        private class nameFilter extends Filter {
+            @Override
+            public String convertResultToString(Object resultValue) {
+                String str = (String) resultValue;
+                return str;
+            }
+
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                if (charSequence != null) {
+                    suggestions.clear();
+                    // readNameListFromTextFile();
+                    int index = 0;
+                    String testString = "";
+                    for (String s : original) {
+                        testString = deleteUmlauts(s);
+                        if (testString.length() >= charSequence.length()
+                                && charSequence.toString().toLowerCase().charAt(0) == testString.toLowerCase().charAt(0)) {
+                            int counter = 0;
+                            for (int j = 0; j < charSequence.length(); j++) {
+                                if (charSequence.toString().toLowerCase().charAt(j) == testString.toLowerCase().charAt(j))
+                                    counter++;
+                            }
+                            if (counter == charSequence.length())
+                                suggestions.add(original.get(index));
+                        }
+                        index++;
+                    }
+                    FilterResults filterResults = new FilterResults();
+                    filterResults.values = suggestions;
+                    filterResults.count = suggestions.size();
+                    return filterResults;
+                } else {
+                    return new FilterResults();
+                }
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                List<String> filteredList = (List<String>) results.values;
+                if (results != null && results.count > 0) {
+                    clear();
+                    for (String c : filteredList) {
+                        add(c);
+                    }
+                    notifyDataSetChanged();
+                }
+            }
+        }
     }
 }
 
