@@ -7,3 +7,6 @@ It features the following :
 - Text animation
 - Timers
 - Input sanitization
+
+-----------
+To build, import the project in Android Studio.
